@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.luke.common.dal.mysql.mapper.TransactionMapper">
+    <resultMap id="TransactionResultMap" type="org.luke.common.dal.model.Transaction">
+        <id column="id" property="id" />
+        <result column="status" property="status" />
+        <result column="sender" property="sender" />
+        <result column="receiver" property="receiver" />
+        <result column="product_id" property="productId" />
+        <result column="price" property="price" />
+        <result column="quantity" property="quantity" />
+        <result column="total" property="total" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modified" property="gmtModified" />
+    </resultMap>
+
+    <sql id="selectTransactionFields">
+        select id, status, sender, receiver, product_id, price, quantity, total, gmt_create, gmt_modified
+        from lab01_transaction
+    </sql>
+
+    <select id="selectTransaction" resultMap="TransactionResultMap">
+        <include refid="selectTransactionFields" />
+        where id = #{transId}
+    </select>
+
+    <insert id="insertTransaction">
+        insert into lab01_transaction id, status, sender, receiver, product_id, price, quantity, total)
+        values
+        (#{id}, #{status}, #{sender}, #{receiver}, #{product_id}, #{price}, #{quantity}, #{total})
+    </insert>
+</mapper>

@@ -1,0 +1,5 @@
+generator:
+  old:
+    transaction: 1000000000
+    user: 1000000
+    product: 100000
