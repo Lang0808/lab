@@ -26,6 +26,7 @@ public class OldDBDataGenerator {
         transaction.setId(IdUtil.generateTransId(i));
         transaction.setPrice(Math.abs(RandomUtil.generateRandomLong()));
         transaction.setQuantity(Math.abs(RandomUtil.generateRandomInt()));
+        transaction.setTotal(transaction.getPrice() * transaction.getQuantity());
         transaction.setSender(IdUtil.generateUserId(genConfig.getUser()));
         transaction.setReceiver(IdUtil.generateUserId(genConfig.getUser()));
         transaction.setProductId(IdUtil.generateProductId(genConfig.getProduct()));

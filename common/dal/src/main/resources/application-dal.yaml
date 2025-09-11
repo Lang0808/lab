@@ -1,7 +1,7 @@
 datasource:
   mysql:
-    jdbcUrl: jdbc:mysql://localhost:3306/luke
-    username: root
-    password: luke_luke
+    jdbcUrl: jdbc:mysql://localhost:3307/luke
+    username: luke_luke
+    password: luke_password_old
     maximumPoolSize: 10
     driverClassName: com.mysql.cj.jdbc.Driver

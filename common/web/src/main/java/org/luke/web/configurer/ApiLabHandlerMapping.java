@@ -2,8 +2,14 @@ package org.luke.web.configurer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.luke.web.annotations.ApiLab;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.function.support.RouterFunctionMapping;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
@@ -23,11 +29,27 @@ public class ApiLabHandlerMapping extends RequestMappingHandlerMapping {
         if(handlerType.isAnnotationPresent(ApiLab.class)) {
             ApiLab apiLab = handlerType.getAnnotation(ApiLab.class);
             String basePath = String.format("%s/%s", apiLab.version(), apiLab.labName());
+            log.info("base path = {}", basePath);
             if(info != null) {
                 RequestMappingInfo newInfo = RequestMappingInfo.paths(basePath).build();
-                return newInfo.combine(info);
+                log.info("new info = {}", newInfo);
+                RequestMappingInfo mappingInfo = newInfo.combine(info);
+                log.info("mapping info = {}", mappingInfo);
+                return mappingInfo;
             }
         }
         return info;
+    }
+
+    /**
+     * Each HandlerMapping has a priority. If priority is lower than priority of SimpleUrlHandlerMapping, this HandlerMapping is never called.
+     * @see DispatcherServlet#initHandlerMappings(ApplicationContext) to see process of sorting HandlerMapping by priority
+     * Override getOrder returns highest precendence to make sure ApiLabHandlerMapping is used before every other HandlerMappings when finding HandlerAdapter for HTTP request
+     *
+     * @return highest precedence
+     */
+    @Override
+    public int getOrder() {
+        return Ordered.HIGHEST_PRECEDENCE;
     }
 }

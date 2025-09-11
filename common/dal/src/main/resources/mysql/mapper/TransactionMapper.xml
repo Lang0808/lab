@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.luke.common.dal.mysql.mapper.TransactionMapper">
     <resultMap id="TransactionResultMap" type="org.luke.common.dal.model.Transaction">
-        <id column="id" property="id" />
+        <id column="transaction_id" property="id" />
         <result column="status" property="status" />
         <result column="sender" property="sender" />
         <result column="receiver" property="receiver" />
@@ -16,8 +16,8 @@
     </resultMap>
 
     <sql id="selectTransactionFields">
-        select id, status, sender, receiver, product_id, price, quantity, total, gmt_create, gmt_modified
-        from lab01_transaction
+        select transaction_id, status, sender, receiver, product_id, price, quantity, total, gmt_create, gmt_modified
+        from transactions
     </sql>
 
     <select id="selectTransaction" resultMap="TransactionResultMap">
@@ -26,8 +26,8 @@
     </select>
 
     <insert id="insertTransaction">
-        insert into lab01_transaction id, status, sender, receiver, product_id, price, quantity, total)
+        insert into transactions (transaction_id, status, sender, receiver, product_id, price, quantity, total)
         values
-        (#{id}, #{status}, #{sender}, #{receiver}, #{product_id}, #{price}, #{quantity}, #{total})
+        (#{id}, #{status}, #{sender}, #{receiver}, #{productId}, #{price}, #{quantity}, #{total})
     </insert>
 </mapper>
