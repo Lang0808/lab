@@ -18,4 +18,8 @@ public class TransactionRepository {
     public void insertTransaction(Transaction transaction) {
         mapper.insertTransaction(transaction);
     }
+
+    public int countTransaction() {
+        return mapper.countTransaction();
+    }
 }

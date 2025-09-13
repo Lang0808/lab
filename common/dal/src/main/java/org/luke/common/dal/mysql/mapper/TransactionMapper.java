@@ -17,4 +17,10 @@ public interface TransactionMapper {
      * @param transaction transaction information
      */
     void insertTransaction(Transaction transaction);
+
+    /**
+     * count number of row in transactions
+     * @return number of row
+     */
+    int countTransaction();
 }

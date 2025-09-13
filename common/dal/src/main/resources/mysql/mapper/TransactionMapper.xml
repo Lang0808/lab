@@ -30,4 +30,9 @@
         values
         (#{id}, #{status}, #{sender}, #{receiver}, #{productId}, #{price}, #{quantity}, #{total})
     </insert>
+
+    <select id="countTransaction">
+        select count(*)
+        from transactions
+    </select>
 </mapper>

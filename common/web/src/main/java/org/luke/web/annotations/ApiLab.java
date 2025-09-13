@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * map controller class to path /api/v1/{labName}
+ * map controller class to path /api/v1/{prefix}/{labName}
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -17,4 +17,5 @@ import java.lang.annotation.Target;
 public @interface ApiLab {
     String version() default "/api/v1";
     String labName();
+    String prefix() default "";
 }

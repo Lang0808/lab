@@ -8,6 +8,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.function.support.RouterFunctionMapping;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
@@ -28,7 +29,7 @@ public class ApiLabHandlerMapping extends RequestMappingHandlerMapping {
         log.info("info = {}", info);
         if(handlerType.isAnnotationPresent(ApiLab.class)) {
             ApiLab apiLab = handlerType.getAnnotation(ApiLab.class);
-            String basePath = String.format("%s/%s", apiLab.version(), apiLab.labName());
+            String basePath = String.format("%s/%s/%s", apiLab.version(), apiLab.labName(), apiLab.prefix());
             log.info("base path = {}", basePath);
             if(info != null) {
                 RequestMappingInfo newInfo = RequestMappingInfo.paths(basePath).build();
@@ -39,6 +40,12 @@ public class ApiLabHandlerMapping extends RequestMappingHandlerMapping {
             }
         }
         return info;
+    }
+
+    @Override
+    protected void initInterceptors() {
+        log.info("init interceptors");
+        super.initInterceptors();
     }
 
     /**
