@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * This class contains API for generating and working with old database
+ */
 @Controller
 @ApiLab(labName = "lab01", prefix = "old_db")
 public class OldDBController {

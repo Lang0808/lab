@@ -8,5 +8,6 @@ create table transactions (
     quantity int,
     total bigint,
     gmt_create DATETIME DEFAULT CURRENT_TIMESTAMP,
-    gmt_modified DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    gmt_modified DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    primary key (transaction_id)
 );
