@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 public enum ErrorCode {
 
     UN_SUPPORTED("UN_SUPPORTED"),
-    INVALID_PARAMS("INVALID_PARAMS");
+    INVALID_PARAMS("INVALID_PARAMS"),
+    RATE_LIMITED("RATE_LIMITED");
 
     private final String errorCode;
 }

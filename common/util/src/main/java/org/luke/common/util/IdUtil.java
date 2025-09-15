@@ -7,7 +7,7 @@ public class IdUtil {
     }
 
     public static String generateTransId(int i) {
-        return String.format("trans-%d", i);
+        return String.format("trans-%d-%d", System.currentTimeMillis(), i);
     }
 
     public static String generateUserId(int nUser) {

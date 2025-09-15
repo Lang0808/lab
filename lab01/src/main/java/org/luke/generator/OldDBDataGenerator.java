@@ -11,9 +11,13 @@ import org.luke.generator.config.OldDBDataGeneratorConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 @Slf4j
 @Component
 public class OldDBDataGenerator {
+
+    private static AtomicBoolean isRun = new AtomicBoolean(false);
 
     @Autowired
     private TransactionRepository transactionRepository;
@@ -34,22 +38,16 @@ public class OldDBDataGenerator {
         return transaction;
     }
 
-    public void generateTransactionTable() {
-        int curPercent = 1;
-        for (int i=0; i<genConfig.getTransaction(); ++i) {
-            Transaction transaction = generateDataTransaction(i);
-            transactionRepository.insertTransaction(transaction);
-            // process total i + 1 row
-            // we want next percent --> i + 1 + 1
-            int nextPercent = ProgressBarUtil.getPercentageProgress(i + 2, genConfig.getTransaction());
-            if(curPercent != nextPercent) {
-                log.info("generate transaction table ${}%", curPercent);
-                curPercent += 1;
-            }
-        }
+    public void generateTransaction(int i) {
+        Transaction transaction = generateDataTransaction(i);
+        transactionRepository.insertTransaction(transaction);
     }
 
-    public void generateInitialDatabaseTest() {
-        generateTransactionTable();
+    public static boolean tryRun() {
+        return isRun.compareAndExchange(false, true);
+    }
+
+    public static boolean tryReleaseRun() {
+        return isRun.compareAndExchange(true, false);
     }
 }

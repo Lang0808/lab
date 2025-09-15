@@ -13,4 +13,10 @@ public class OldDBDataGeneratorConfig {
     private int user;
     private int product;
     private int transaction;
+
+    /**
+     * how many transaction is created at 1 time
+     * this field define the concurrency of generate process
+     */
+    private int concurrency;
 }
