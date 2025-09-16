@@ -4,6 +4,12 @@ import org.apache.ibatis.annotations.Mapper;
 import org.luke.common.dal.model.Transaction;
 
 @Mapper
+//@PerformMigrateDB(
+//        primaryDataSource = "dataSource",
+//        secondaryDataSource = "dataSourceNewDB",
+//        readWeight = "",
+//        writeWeight = ""
+//)
 public interface TransactionMapper {
     /**
      * get a transaction by transaction id
