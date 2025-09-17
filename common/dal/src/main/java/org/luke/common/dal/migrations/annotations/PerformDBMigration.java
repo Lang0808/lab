@@ -7,6 +7,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE})
 public @interface PerformDBMigration {
-    String oldDataSourceRef();
     String newDataSourceRef();
 }
