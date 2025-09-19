@@ -1,4 +1,4 @@
-package org.luke.common.dal.migrations.model;
+package org.luke.common.dal.migrations;
 
 import lombok.Data;
 import org.luke.common.dal.migrations.enums.DBReadType;

@@ -33,7 +33,7 @@ public class WebExceptionHandler {
         }
 
         ResponseUtil.setBaseResponseBasicInfos(response, apiLab);
-        response.setErrorCode(e.getErrorCode().name());
+        response.setErrorCode(e.getErrorCode().getErrorCode());
         response.setMessage(e.getMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);

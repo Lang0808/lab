@@ -18,19 +18,19 @@ public class DatasourceConfiguration {
         return new HikariConfig();
     }
 
-//    @Bean
-//    @ConfigurationProperties("datasource.new.mysql")
-//    public HikariConfig hikariConfigNewDB() {
-//        return new HikariConfig();
-//    }
+    @Bean
+    @ConfigurationProperties("datasource.new.mysql")
+    public HikariConfig hikariConfigNewDB() {
+        return new HikariConfig();
+    }
 
     @Bean
     public DataSource dataSource(@Qualifier("hikariConfig") HikariConfig hikariConfig) {
         return new HikariDataSource(hikariConfig);
     }
 
-//    @Bean
-//    public DataSource dataSourceNewDB(@Qualifier("hikariConfigNewDB")HikariConfig hikariConfig) {
-//        return new HikariDataSource(hikariConfig);
-//    }
+    @Bean
+    public DataSource dataSourceNewDB(@Qualifier("hikariConfigNewDB")HikariConfig hikariConfig) {
+        return new HikariDataSource(hikariConfig);
+    }
 }

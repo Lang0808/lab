@@ -1,6 +1,7 @@
 package org.luke.common.dal.mysql.config;
 
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.luke.common.dal.migrations.MigrateDBMapperFactoryBean;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,11 +14,8 @@ import javax.sql.DataSource;
 @Configuration
 @MapperScan(
         basePackages = "org.luke.common.dal.mysql.mapper.**",
-        sqlSessionFactoryRef = "sqlSessionFactory")
-//@MapperScan(
-//        basePackages = "org.luke.common.dal.mysql.mapper.**",
-//        sqlSessionFactoryRef = "sqlSessionFactoryNewDB",
-//        nameGenerator = "")
+        sqlSessionFactoryRef = "sqlSessionFactory",
+        factoryBean = MigrateDBMapperFactoryBean.class)
 public class MapperConfiguration {
 
     @Bean
@@ -29,13 +27,13 @@ public class MapperConfiguration {
         return sessionFactory.getObject();
     }
 
-//    @Bean
-//    public SqlSessionFactory sqlSessionFactoryNewDB(@Qualifier("dataSourceNewDB") DataSource dataSource) throws Exception {
-//        SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-//        sessionFactory.setDataSource(dataSource);
-//        sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver()
-//                .getResources("classpath:mysql/mapper/*.xml"));
-//        return sessionFactory.getObject();
-//    }
+    @Bean
+    public SqlSessionFactory sqlSessionFactoryNewDB(@Qualifier("dataSourceNewDB") DataSource dataSource) throws Exception {
+        SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource);
+        sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver()
+                .getResources("classpath:mysql/mapper/*.xml"));
+        return sessionFactory.getObject();
+    }
 
 }

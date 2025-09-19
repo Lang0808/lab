@@ -1,4 +1,4 @@
-package org.luke.common.dal.migrations.annotations;
+package org.luke.common.dal.migrations;
 
 import java.lang.annotation.*;
 
@@ -7,5 +7,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE})
 public @interface PerformDBMigration {
-    String newDataSourceRef();
+    String newDBSqlSessionFactoryRef();
 }

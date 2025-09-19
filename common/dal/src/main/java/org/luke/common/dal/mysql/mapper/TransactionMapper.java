@@ -1,15 +1,16 @@
 package org.luke.common.dal.mysql.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.luke.common.dal.migrations.PerformDBMigration;
+import org.luke.common.dal.model.Paging;
 import org.luke.common.dal.model.Transaction;
 
+import java.util.List;
+
 @Mapper
-//@PerformMigrateDB(
-//        primaryDataSource = "dataSource",
-//        secondaryDataSource = "dataSourceNewDB",
-//        readWeight = "",
-//        writeWeight = ""
-//)
+@PerformDBMigration(
+        newDBSqlSessionFactoryRef = "sqlSessionFactoryNewDB"
+)
 public interface TransactionMapper {
     /**
      * get a transaction by transaction id
@@ -29,4 +30,19 @@ public interface TransactionMapper {
      * @return number of row
      */
     int countTransaction();
+
+    /**
+     * get transactions based on filter and paging
+     * @param filter filter
+     * @param paging paging
+     * @return transactions information that satisfies filter and within paging
+     */
+    List<Transaction> selectTransactions(Transaction filter, Paging paging);
+
+    /**
+     * count number of transactions that satisfies filter
+     * @param filter filter
+     * @return number of transactions that satisfies filter
+     */
+    int countTransactions(Transaction filter);
 }

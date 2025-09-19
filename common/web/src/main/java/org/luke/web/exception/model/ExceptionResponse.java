@@ -9,6 +9,4 @@ import org.luke.web.model.BaseResponse;
 @Getter
 @Setter
 public class ExceptionResponse extends BaseResponse {
-    private String errorCode;
-    private String message;
 }

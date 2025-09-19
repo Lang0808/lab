@@ -20,6 +20,25 @@
         from transactions
     </sql>
 
+    <sql id="filterTransactions">
+        where TRUE
+        <if test="filter.id != null">
+            and transaction_id = #{filter.id}
+        </if>
+        <if test="filter.status != null">
+            and status = #{filter.status}
+        </if>
+        <if test="filter.sender != null">
+            and sender = #{filter.sender}
+        </if>
+        <if test="filter.receiver != null">
+            and receiver = #{filter.receiver}
+        </if>
+        <if test="filter.productId != null">
+            and product_id = #{filter.productId}
+        </if>
+    </sql>
+
     <select id="selectTransaction" resultMap="TransactionResultMap">
         <include refid="selectTransactionFields" />
         where id = #{transId}
@@ -34,5 +53,12 @@
     <select id="countTransaction">
         select count(*)
         from transactions
+    </select>
+
+    <select id="selectTransactions" resultMap="TransactionResultMap">
+        <include refid="selectTransactionFields" />
+        <include refid="filterTransactions" />
+        order by gmt_create desc
+        limit #{paging.limit} offset #{paging.offset}
     </select>
 </mapper>
