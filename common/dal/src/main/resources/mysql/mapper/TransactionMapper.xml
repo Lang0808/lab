@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.luke.common.dal.mysql.mapper.TransactionMapper">
+
     <resultMap id="TransactionResultMap" type="org.luke.common.dal.model.Transaction">
         <id column="transaction_id" property="id" />
         <result column="status" property="status" />
@@ -41,7 +42,7 @@
 
     <select id="selectTransaction" resultMap="TransactionResultMap">
         <include refid="selectTransactionFields" />
-        where id = #{transId}
+        where transaction_id = #{transId}
     </select>
 
     <insert id="insertTransaction">

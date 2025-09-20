@@ -1,6 +1,7 @@
 package org.luke.common.dal.mysql.config;
 
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.luke.common.dal.interceptors.DALLogPreparedInterceptor;
 import org.luke.common.dal.migrations.MigrateDBMapperFactoryBean;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -24,6 +25,7 @@ public class MapperConfiguration {
         sessionFactory.setDataSource(dataSource);
         sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver()
                  .getResources("classpath:mysql/mapper/*.xml"));
+        sessionFactory.setPlugins(new DALLogPreparedInterceptor());
         return sessionFactory.getObject();
     }
 
@@ -33,6 +35,7 @@ public class MapperConfiguration {
         sessionFactory.setDataSource(dataSource);
         sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver()
                 .getResources("classpath:mysql/mapper/*.xml"));
+        sessionFactory.setPlugins(new DALLogPreparedInterceptor());
         return sessionFactory.getObject();
     }
 

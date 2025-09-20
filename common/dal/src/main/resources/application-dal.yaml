@@ -1,7 +1,19 @@
 datasource:
-  mysql:
+  old:
     jdbcUrl: jdbc:mysql://localhost:3307/luke
     username: luke_luke
     password: luke_password_old
     maximumPoolSize: 10
     driverClassName: com.mysql.cj.jdbc.Driver
+  new:
+    jdbcUrl: jdbc:mysql://localhost:3308/luke
+    username: luke_luke
+    password: luke_password_new
+    maximumPoolSize: 10
+    driverClassName: com.mysql.cj.jdbc.Driver
+
+logging:
+  level:
+    org.mybatis: DEBUG
+    org.apache.ibatis: DEBUG
+    org.mybatis.spring.mapper.MapperFactoryBean: DEBUG

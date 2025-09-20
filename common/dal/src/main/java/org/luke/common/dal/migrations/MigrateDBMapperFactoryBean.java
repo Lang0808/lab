@@ -14,11 +14,12 @@ import org.springframework.context.ApplicationContextAware;
  * Change SqlSession that is injected to {@link org.apache.ibatis.binding.MapperProxy} from {@link SqlSessionTemplate} to {@link MigrateDBSqlSessionTemplate}.
  * @param <T>
  */
-public class MigrateDBMapperFactoryBean<T> extends MapperFactoryBean<T> implements ApplicationContextAware {
+public class MigrateDBMapperFactoryBean<T> extends MapperFactoryBean<T> {
 
     @Autowired
     private volatile DBMigrationInfo migrationInfo;
 
+    @Autowired
     private ApplicationContext applicationContext;
 
     public MigrateDBMapperFactoryBean() {
@@ -27,11 +28,6 @@ public class MigrateDBMapperFactoryBean<T> extends MapperFactoryBean<T> implemen
 
     public MigrateDBMapperFactoryBean(Class<T> mapperInterface) {
         super(mapperInterface);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
     }
 
     @Override
@@ -55,6 +51,7 @@ public class MigrateDBMapperFactoryBean<T> extends MapperFactoryBean<T> implemen
         SqlSessionTemplate newDBSqlSessionTemplate = new SqlSessionTemplate(newDBSqlSessionFactory);
         MigrateDBSqlSessionTemplate migrateTemplate = new MigrateDBSqlSessionTemplate(sqlSessionFactory);
         migrateTemplate.setNewSqlSessionTemplate(newDBSqlSessionTemplate);
+        migrateTemplate.setMigrationInfo(migrationInfo);
         return migrateTemplate;
     }
 }

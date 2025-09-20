@@ -1,15 +1,14 @@
 package org.luke.controller;
 
-import org.luke.common.dal.model.Transaction;
 import org.luke.common.model.exception.ErrorCode;
 import org.luke.model.req.GetTransactionReq;
 import org.luke.model.resp.GetTransactionResp;
+import org.luke.service.LoadTestApiService;
 import org.luke.web.annotations.ApiLab;
 import org.luke.web.exception.model.BaseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.List;
 
 /**
  * this class contains APIs that allows stress-testing tool to test and verify result
@@ -19,8 +18,11 @@ import java.util.List;
 @ApiLab(labName = "lab01", prefix = "api_test")
 public class LoadTestApiController {
 
+    @Autowired
+    private LoadTestApiService loadTestApiService;
+
     @GetMapping("/transaction")
-    public GetTransactionResp getTransaction(GetTransactionReq req) {
-        throw new BaseException(ErrorCode.UN_SUPPORTED, "get transaction is not supported yet");
+    public GetTransactionResp getTransaction(String transId) {
+        return loadTestApiService.getTransaction(transId);
     }
 }

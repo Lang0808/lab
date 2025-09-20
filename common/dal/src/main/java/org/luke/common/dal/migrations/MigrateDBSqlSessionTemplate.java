@@ -19,13 +19,12 @@ import java.util.Map;
 /**
  * this class will be injected to {@link org.apache.ibatis.binding.MapperProxy} of all {@link org.apache.ibatis.annotations.Mapper} interface that annotated by {@link PerformDBMigration}
  */
+@Setter
 @Slf4j
 public class MigrateDBSqlSessionTemplate extends SqlSessionTemplate {
 
-    @Autowired
     private volatile DBMigrationInfo migrationInfo;
 
-    @Setter
     private SqlSessionTemplate newSqlSessionTemplate;
 
     public MigrateDBSqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
