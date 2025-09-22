@@ -3,16 +3,13 @@ package org.luke.common.dal.migrations;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.cursor.Cursor;
-import org.apache.ibatis.executor.BatchResult;
-import org.apache.ibatis.session.*;
+import org.apache.ibatis.session.ResultHandler;
+import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.luke.common.dal.migrations.enums.DBReadType;
 import org.luke.common.dal.migrations.enums.DBWriteType;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.support.PersistenceExceptionTranslator;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +32,7 @@ public class MigrateDBSqlSessionTemplate extends SqlSessionTemplate {
     @Override
     public <T> T selectOne(String statement) {
         log.info("selectOne1 - migrationInfo = {}", migrationInfo);
-        if(migrationInfo.getReadType().equals(DBReadType.OLD)) {
+        if (migrationInfo.getReadType().equals(DBReadType.OLD)) {
             log.info("selectOne1 - old db is read");
             return super.selectOne(statement);
         }

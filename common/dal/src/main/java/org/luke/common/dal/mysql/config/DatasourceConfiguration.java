@@ -33,7 +33,7 @@ public class DatasourceConfiguration {
     }
 
     @Bean
-    public DataSource dataSourceNewDB(@Qualifier("hikariConfigNewDB")HikariConfig hikariConfig) {
+    public DataSource dataSourceNewDB(@Qualifier("hikariConfigNewDB") HikariConfig hikariConfig) {
         return new HikariDataSource(hikariConfig);
     }
 

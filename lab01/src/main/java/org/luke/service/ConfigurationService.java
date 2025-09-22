@@ -18,13 +18,11 @@ public class ConfigurationService {
     private volatile DBMigrationInfo migrationInfo;
 
     public BaseResponse changeConfiguration(ConfigurationChangeReq req) {
-        if(req.getConfigType().equals(ConfigType.READ)) {
+        if (req.getConfigType().equals(ConfigType.READ)) {
             migrationInfo.setReadType(DBReadType.valueOf(req.getValue()));
-        }
-        else if(req.getConfigType().equals(ConfigType.WRITE)) {
+        } else if (req.getConfigType().equals(ConfigType.WRITE)) {
             migrationInfo.setWriteType(DBWriteType.valueOf(req.getValue()));
-        }
-        else throw new BaseException(ErrorCode.INVALID_PARAMS, "Invalid config type");
+        } else throw new BaseException(ErrorCode.INVALID_PARAMS, "Invalid config type");
         return new BaseResponse();
     }
 }

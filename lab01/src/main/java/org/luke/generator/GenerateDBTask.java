@@ -18,7 +18,7 @@ public class GenerateDBTask implements Runnable {
 
     @Override
     public void run() {
-        if(i > total) return;
+        if (i > total) return;
         if (i == total) {
             boolean success = OldDBDataGenerator.tryReleaseRun();
             log.info("release lock data generator, success = {}", success);

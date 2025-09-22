@@ -24,7 +24,7 @@ public class MapperConfiguration {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
         sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver()
-                 .getResources("classpath:mysql/mapper/*.xml"));
+                .getResources("classpath:mysql/mapper/*.xml"));
         sessionFactory.setPlugins(new DALLogPreparedInterceptor());
         return sessionFactory.getObject();
     }

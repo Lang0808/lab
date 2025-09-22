@@ -3,8 +3,6 @@ package org.luke.executor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.concurrent.*;
-
 @Getter
 @Setter
 public class ExecutorParameter {

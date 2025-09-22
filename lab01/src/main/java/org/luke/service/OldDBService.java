@@ -18,10 +18,9 @@ public class OldDBService {
 
     public CountRowResp countRowOldDB(@Validated CountRowReq req) {
         int nRow = 0;
-        if(req.getTableName().equals(DBTable.TRANSACTION)) {
+        if (req.getTableName().equals(DBTable.TRANSACTION)) {
             nRow = transRepo.countTransaction();
-        }
-        else {
+        } else {
             throw new BaseException(ErrorCode.UN_SUPPORTED, "Count API doesn't support this table");
         }
 

@@ -1,11 +1,8 @@
 package org.luke.controller;
 
-import org.luke.common.model.exception.ErrorCode;
-import org.luke.model.req.GetTransactionReq;
 import org.luke.model.resp.GetTransactionResp;
 import org.luke.service.LoadTestApiService;
 import org.luke.web.annotations.ApiLab;
-import org.luke.web.exception.model.BaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

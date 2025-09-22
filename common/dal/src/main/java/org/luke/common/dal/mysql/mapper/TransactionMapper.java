@@ -14,6 +14,7 @@ import java.util.List;
 public interface TransactionMapper {
     /**
      * get a transaction by transaction id
+     *
      * @param transId id of transaction
      * @return transaction information (if any). Otherwise, return null
      */
@@ -21,18 +22,21 @@ public interface TransactionMapper {
 
     /**
      * insert transaction to database.
+     *
      * @param transaction transaction information
      */
     void insertTransaction(Transaction transaction);
 
     /**
      * count number of row in transactions
+     *
      * @return number of row
      */
     int countTransaction();
 
     /**
      * get transactions based on filter and paging
+     *
      * @param filter filter
      * @param paging paging
      * @return transactions information that satisfies filter and within paging
@@ -41,6 +45,7 @@ public interface TransactionMapper {
 
     /**
      * count number of transactions that satisfies filter
+     *
      * @param filter filter
      * @return number of transactions that satisfies filter
      */

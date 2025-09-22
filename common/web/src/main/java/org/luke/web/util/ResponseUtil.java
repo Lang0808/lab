@@ -10,7 +10,7 @@ public class ResponseUtil {
     public static void setBaseResponseBasicInfos(BaseResponse baseResponse, ApiLab apiLab) {
         baseResponse.setErrorCode(ErrorCode.SUCCESS.getErrorCode());
         baseResponse.setMessage("API execute success");
-        if(apiLab == null) return;
+        if (apiLab == null) return;
         baseResponse.setLabName(apiLab.labName());
         baseResponse.setResponseTime(TimeUtil.getAndFormatCurrentTime());
     }

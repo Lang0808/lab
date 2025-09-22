@@ -5,7 +5,6 @@ import org.luke.common.dal.model.Transaction;
 import org.luke.common.dal.model.TransactionStatus;
 import org.luke.common.dal.repository.TransactionRepository;
 import org.luke.common.util.IdUtil;
-import org.luke.common.util.ProgressBarUtil;
 import org.luke.common.util.RandomUtil;
 import org.luke.generator.config.OldDBDataGeneratorConfig;
 import org.springframework.beans.factory.annotation.Autowired;

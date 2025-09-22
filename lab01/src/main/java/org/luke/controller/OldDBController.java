@@ -12,11 +12,9 @@ import org.luke.web.annotations.ApiLab;
 import org.luke.web.exception.model.BaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -43,12 +41,12 @@ public class OldDBController {
 
     @PostMapping("/generate")
     public GenerateOldDataResp generateOldDB() {
-        if(!OldDBDataGenerator.tryRun()) {
+        if (!OldDBDataGenerator.tryRun()) {
             throw new BaseException(ErrorCode.RATE_LIMITED, "Only 1 task generator can run at 1 time");
         }
 
         AtomicInteger current = new AtomicInteger(0);
-        for(int i = 0; i<oldDBDataGeneratorConfig.getConcurrency();++i) {
+        for (int i = 0; i < oldDBDataGeneratorConfig.getConcurrency(); ++i) {
             executor.execute(new GenerateDBTask(
                     current.getAndIncrement(),
                     oldDBDataGeneratorConfig.getTransaction(),

@@ -4,16 +4,16 @@
 <mapper namespace="org.luke.common.dal.mysql.mapper.TransactionMapper">
 
     <resultMap id="TransactionResultMap" type="org.luke.common.dal.model.Transaction">
-        <id column="transaction_id" property="id" />
-        <result column="status" property="status" />
-        <result column="sender" property="sender" />
-        <result column="receiver" property="receiver" />
-        <result column="product_id" property="productId" />
-        <result column="price" property="price" />
-        <result column="quantity" property="quantity" />
-        <result column="total" property="total" />
-        <result column="gmt_create" property="gmtCreate" />
-        <result column="gmt_modified" property="gmtModified" />
+        <id column="transaction_id" property="id"/>
+        <result column="status" property="status"/>
+        <result column="sender" property="sender"/>
+        <result column="receiver" property="receiver"/>
+        <result column="product_id" property="productId"/>
+        <result column="price" property="price"/>
+        <result column="quantity" property="quantity"/>
+        <result column="total" property="total"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
     </resultMap>
 
     <sql id="selectTransactionFields">
@@ -41,7 +41,7 @@
     </sql>
 
     <select id="selectTransaction" resultMap="TransactionResultMap">
-        <include refid="selectTransactionFields" />
+        <include refid="selectTransactionFields"/>
         where transaction_id = #{transId}
     </select>
 
@@ -57,8 +57,8 @@
     </select>
 
     <select id="selectTransactions" resultMap="TransactionResultMap">
-        <include refid="selectTransactionFields" />
-        <include refid="filterTransactions" />
+        <include refid="selectTransactionFields"/>
+        <include refid="filterTransactions"/>
         order by gmt_create desc
         limit #{paging.limit} offset #{paging.offset}
     </select>

@@ -4,7 +4,6 @@ import org.luke.common.dal.model.Transaction;
 import org.luke.common.dal.repository.TransactionRepository;
 import org.luke.common.model.exception.ErrorCode;
 import org.luke.model.model.TransactionInfo;
-import org.luke.model.req.GetTransactionReq;
 import org.luke.model.resp.GetTransactionResp;
 import org.luke.service.converter.TransactionConverter;
 import org.luke.web.exception.model.BaseException;

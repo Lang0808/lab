@@ -1,8 +1,8 @@
 package org.luke.web.configurer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.luke.common.util.TimeUtil;
 import org.luke.web.annotations.ApiLab;
 import org.luke.web.model.BaseResponse;
 import org.luke.web.util.ResponseUtil;
@@ -10,8 +10,6 @@ import org.springframework.core.MethodParameter;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Slf4j
 public class BaseResponseInterceptor implements HandlerMethodReturnValueHandler {

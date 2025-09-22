@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.luke.common.dal.model.TransactionStatus;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 public class TransactionInfo {
