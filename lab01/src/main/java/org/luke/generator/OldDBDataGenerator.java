@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Component
 public class OldDBDataGenerator {
 
-    private static AtomicBoolean isRun = new AtomicBoolean(false);
+    private static final AtomicBoolean isRun = new AtomicBoolean(false);
 
     @Autowired
     private TransactionRepository transactionRepository;
