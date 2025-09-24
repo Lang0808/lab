@@ -4,6 +4,8 @@ import org.luke.common.dal.model.Transaction;
 import org.luke.common.dal.repository.TransactionRepository;
 import org.luke.common.model.exception.ErrorCode;
 import org.luke.model.model.TransactionInfo;
+import org.luke.model.req.BuyProductReq;
+import org.luke.model.resp.BuyProductResp;
 import org.luke.model.resp.GetTransactionResp;
 import org.luke.service.converter.TransactionConverter;
 import org.luke.web.exception.model.BaseException;
@@ -28,5 +30,17 @@ public class LoadTestApiService {
         GetTransactionResp resp = new GetTransactionResp();
         resp.setTransInfo(transInfo);
         return resp;
+    }
+
+    public BuyProductResp buyProduct(BuyProductReq req) {
+        Transaction transDO = createOpenTransaction(req);
+    }
+
+    private Transaction createOpenTransaction(BuyProductReq req) {
+        Transaction transaction = new Transaction();
+        transaction.setId(req.getTransId());
+        transaction.setSender(req.getUserId());
+        transaction.setQuantity(req.getQuantity());
+        transaction.setPrice(req.getPrice());
     }
 }

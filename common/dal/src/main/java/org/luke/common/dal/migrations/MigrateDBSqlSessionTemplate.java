@@ -15,6 +15,7 @@ import java.util.Map;
 
 /**
  * this class will be injected to {@link org.apache.ibatis.binding.MapperProxy} of all {@link org.apache.ibatis.annotations.Mapper} interface that annotated by {@link PerformDBMigration}
+ * When a method in this class is called, it will find the appropriate {@link SqlSessionTemplate} based on {@link DBMigrationInfo} and route request to that {@link SqlSessionTemplate}
  */
 @Setter
 @Slf4j
