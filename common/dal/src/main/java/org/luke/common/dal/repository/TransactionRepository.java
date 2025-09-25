@@ -18,8 +18,12 @@ public class TransactionRepository {
         return mapper.selectTransaction(transId);
     }
 
-    public void insertTransaction(Transaction transaction) {
-        mapper.insertTransaction(transaction);
+    public int insertTransaction(Transaction transaction) {
+        return mapper.insertTransaction(transaction);
+    }
+
+    public int updateTransaction(Transaction transaction) {
+        return mapper.updateTransaction(transaction);
     }
 
     public int countTransaction() {

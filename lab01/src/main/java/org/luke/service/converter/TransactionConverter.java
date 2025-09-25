@@ -1,10 +1,12 @@
 package org.luke.service.converter;
 
 import org.luke.common.dal.model.Transaction;
+import org.luke.common.dal.model.TransactionStatus;
 import org.luke.common.util.TimeUtil;
 import org.luke.model.model.ProductInfo;
 import org.luke.model.model.TransactionInfo;
 import org.luke.model.model.UserInfo;
+import org.luke.model.req.BuyProductReq;
 import org.springframework.stereotype.Component;
 
 @Component

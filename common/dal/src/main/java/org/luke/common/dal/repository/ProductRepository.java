@@ -15,8 +15,8 @@ public class ProductRepository {
         this.mapper = mapper;
     }
 
-    public int save(Product product) { return mapper.insertProduct(product); }
-    public Product findById(String id) { return mapper.selectProduct(id); }
-    public List<Product> findAll(Product filter, Paging paging) { return mapper.selectProducts(filter, paging); }
-    public int update(Product product) { return mapper.updateProduct(product); }
+    public int insertProduct(Product product) { return mapper.insertProduct(product); }
+    public Product selectProduct(String id) { return mapper.selectProduct(id); }
+    public List<Product> selectProducts(Product filter, Paging paging) { return mapper.selectProducts(filter, paging); }
+    public int updateProduct(Product product) { return mapper.updateProduct(product); }
 }

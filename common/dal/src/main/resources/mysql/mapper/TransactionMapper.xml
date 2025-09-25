@@ -62,4 +62,19 @@
         order by gmt_create desc
         limit #{paging.limit} offset #{paging.offset}
     </select>
+
+    <update id="updateTransaction">
+        update transactions
+        <set>
+            <if test="status != null">status = #{status},</if>
+            <if test="sender != null">sender = #{sender},</if>
+            <if test="receiver != null">receiver = #{receiver},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="total != null">total = #{total},</if>
+            <if test="gmtModified != null">gmt_modified = #{gmtModified}</if>
+        </set>
+        where transaction_id = #{id}
+    </update>
 </mapper>
