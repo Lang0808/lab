@@ -5,14 +5,11 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class Product {
+public class User {
     private String id;
     private String status;
-    private String merchant;
-    private Long price;
-    private String creator;
     private String name;
-    private String description;
     private Date gmtCreate;
     private Date gmtModified;
+    private Long balance;
 }

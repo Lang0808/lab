@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.luke.common.dal.mysql.mapper.UserMapper">
+
+    <resultMap id="UserResultMap" type="org.luke.common.dal.model.User">
+        <id column="user_id" property="id"/>
+        <result column="status" property="status"/>
+        <result column="name" property="name"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="balance" property="balance"/>
+    </resultMap>
+
+    <sql id="selectUserFields">
+        select user_id, status, name, gmt_create, gmt_modified, balance
+        from users
+    </sql>
+
+    <sql id="filterUsers">
+        where TRUE
+        <if test="filter.id != null">
+            and user_id = #{filter.id}
+        </if>
+        <if test="filter.status != null">
+            and status = #{filter.status}
+        </if>
+        <if test="filter.name != null">
+            and name = #{filter.name}
+        </if>
+    </sql>
+
+    <select id="selectUser" resultMap="UserResultMap">
+        <include refid="selectUserFields"/>
+        where user_id = #{userId}
+    </select>
+
+    <insert id="insertUser">
+        insert into users (user_id, status, name, balance)
+        values (#{id}, #{status}, #{name}, #{balance})
+    </insert>
+
+    <update id="updateUser">
+        update users
+        set status = #{status}, name = #{name}, balance = #{balance}
+        where user_id = #{id}
+    </update>
+
+    <select id="selectUsers" resultMap="UserResultMap">
+        <include refid="selectUserFields"/>
+        <include refid="filterUsers"/>
+        order by gmt_create desc
+        limit #{paging.limit} offset #{paging.offset}
+    </select>
+</mapper>

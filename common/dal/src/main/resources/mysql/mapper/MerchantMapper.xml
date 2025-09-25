@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.luke.common.dal.mysql.mapper.MerchantMapper">
+
+    <resultMap id="MerchantResultMap" type="org.luke.common.dal.model.Merchant">
+        <id column="merchant_id" property="id"/>
+        <result column="status" property="status"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+
+    <sql id="selectMerchantFields">
+        select merchant_id, status, name, description, gmt_create, gmt_modified
+        from merchants
+    </sql>
+
+    <sql id="filterMerchants">
+        where TRUE
+        <if test="filter.id != null">
+            and merchant_id = #{filter.id}
+        </if>
+        <if test="filter.status != null">
+            and status = #{filter.status}
+        </if>
+        <if test="filter.name != null">
+            and name = #{filter.name}
+        </if>
+    </sql>
+
+    <select id="selectMerchant" resultMap="MerchantResultMap">
+        <include refid="selectMerchantFields"/>
+        where merchant_id = #{merchantId}
+    </select>
+
+    <insert id="insertMerchant">
+        insert into merchants (merchant_id, status, name, description)
+        values (#{id}, #{status}, #{name}, #{description})
+    </insert>
+
+    <update id="updateMerchant">
+        update merchants
+        set status = #{status}, name = #{name}, description = #{description}
+        where merchant_id = #{id}
+    </update>
+
+    <select id="selectMerchants" resultMap="MerchantResultMap">
+        <include refid="selectMerchantFields"/>
+        <include refid="filterMerchants"/>
+        order by gmt_create desc
+        limit #{paging.limit} offset #{paging.offset}
+    </select>
+</mapper>
