@@ -30,9 +30,9 @@ A service in Kafka ecosystem. It gets data from source, transform it, then put i
 
 ### Naive way
 
-When I was working at my first company, I need to migrate database MySQL that is running on a server to another server. 
+When I was working at my first company, I need to migrate database MySQL that is running on old server to new server. 
 
-The reason for this task is because of the restructure server and network in company, my team's services belongs to another network cluster, so my team needs to move database and service to our network cluster.
+The reason for this task is because of the restructure server and network in company, my team's services belongs to another network cluster, so my team needs to move database and service to a new network cluster.
 
 What I do is a very naive way:
 - Stop the service
@@ -45,7 +45,9 @@ This way is simple, but has a very big disadvantages:
 
 Let's do some maths to compute mysqldump performances. 
 - mysqldump creates a logical backup. It creates a backup of database as SQL statements like inserts, create table SQL statements.
-- I assume that our database is 
+- I assume that old database has 9 million rows. 
+- You can use SQL command 'select AVG_ROW_LENGTH from INFORMATION_SCHEMA.tables' to view average size of rows.
+- About my database, table transactions has average size 335 bytes. It means we have nearly 335 x 9M rows = 1.5 GB.
 
 Why I can do this way? Why my boss accept it.
 

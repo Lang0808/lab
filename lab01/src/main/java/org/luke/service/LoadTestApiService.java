@@ -28,10 +28,13 @@ public class LoadTestApiService {
     private TransactionConverter transConverter;
 
     @Autowired
-    private UserRepository userRepo;
+    private UserService userService;
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private UserRepository userRepo;
 
     public GetTransactionResp getTransaction(String transId) {
         Transaction transDO = transRepo.selectTransaction(transId);
@@ -48,12 +51,12 @@ public class LoadTestApiService {
      * Serves as a test to create transaction for db migration.
      * A real implementation for payment system will be done in next labs.
      *
-     * @param req
+     * @param req request
      * @return
      */
     public BuyProductResp buyProduct(BuyProductReq req) {
         Product product = productService.getProductAndCheck(req);
-        User user = userRepo.selectUser(req.getUserId());
+        User user = userService.getUserAndCheck(req);
 
         // Create and insert transaction with status OPEN
         Transaction transDO = createOpenTransaction(req, product);

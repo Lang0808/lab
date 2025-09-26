@@ -6,7 +6,9 @@ import org.luke.common.model.exception.ErrorCode;
 import org.luke.model.req.BuyProductReq;
 import org.luke.web.exception.model.BaseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProductService {
 
     @Autowired
