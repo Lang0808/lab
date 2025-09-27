@@ -3,28 +3,25 @@ You are a good developer. You very good at mysql, java and has many years of exp
 
 ``` task ```
 You just write the document about your home lab. 
-It's about how to migrate database. 
-The document is file readme.md in lab01.
+It's about how to migrate database.
 
 Do not add any way. You must keep my way idea the same. 
 Just smooth the grammar and document structure.
 
-If you have any feedbacks on my way, write it out in a file called AI_FEEDBACKS.md. 
+Write your feedback out in a file AI_FEEDBACKS.md. 
 Just feedback on my way, don't talk about any other ways.
-You just apply your change directly on the file readme.md in lab01. 
-Write your feedback to AI_FEEDBACKS.md. 
 I want you to feedback about the not good of the way, 
-and is my explaination good or not. 
+and is my explanation good or not. 
 The feedback should be in same folder with the readme. 
-You must harder in your feedback. You must be very professional. 
-You must be very serious. You must be very strict. You must be very detail. 
+You must be very professional, very serious,  very strict, very detail. 
 If you see the current feedback fine, you should not change it.
+Your feedback must be an easy to read markdown document. 
+And you must feedback every way I write into document.
 
 Break lines carefully. 
 Each line in feedback and document should not have more than 20 words.
 
-Because the readme.md in lab01 maybe fixed by you many times. 
-So if you see that one section is fixed by you before, you
-should not fix it again. 
+Iif you see that one section that may be fixed by you before, you
+must not fix it again. 
 
 In the readme document, the image must separated with other text by a break line.
