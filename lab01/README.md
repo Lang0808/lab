@@ -1,152 +1,173 @@
 # LAB 01 - DATABASE MIGRATION
 
-## Define
+## Definition
 
-In software development, there are cases that we need to migrate from old to new database.
+In software development, there are cases where we need to migrate
+from an old database to a new one.
 
-Requirements are:
+**Requirements:**
+- No downtime. Users must use the system normally during migration.
+- Emergency rollback. If something happens during migration, such as
+  writing to the new database fails, we must rollback to the old database.
+- Correctness. The old and new databases must be the same and consistent.
 
-- Not downtime. User must use system normally during the time we migrate database
-- Emergency. Rollback-able. If something happens during database migration, such as writing to new database fail, we
-  must rollback to the old database.
-- Correctness. The old and new database must be the same, must be consistent.
-
-## Technologies must know
+## Technologies
 
 ### Debezium
 
-A service that captures all row-level changes happen in database, so that application can respond to it.
+A service that captures all row-level changes in the database,
+so applications can respond to them.
 
 ### Kafka
 
-A streaming platform, popular for its scalability and throughput. 
-It is also a message queue, support async communication between services.
+A streaming platform, popular for scalability and throughput.
+It is also a message queue, supporting async communication between services.
 
 #### Kafka Connect
 
-A service in Kafka ecosystem. It gets data from source, transform it, then put it to sink.
+A service in the Kafka ecosystem. It gets data from a source,
+transforms it, then puts it to a sink.
 
 ### Mysqldump
-A tool to create a logical snapshot of MySQL database.
-
-A logical snapshot is a set of SQL statements that can be used to recreate the database.
+A tool to create a logical snapshot of a MySQL database.
+A logical snapshot is a set of SQL statements that can recreate the database.
 
 ## Task
-You must migrate database from a lab01_old_db container to lab01_new_db container.
+You must migrate the database from the lab01_old_db container
+to the lab01_new_db container.
+The migration must satisfy all conditions listed above.
 
-The migration must satisfy all conditions listed in define.
-
-About the database:
+**Database details:**
 - Database name: luke
-- Tables:
-    - Transactions: 9 million rows
+- Table: Transactions (9 million rows)
 
-### Prepare lab data
+### Prepare Lab Data
 
+## Migration Approaches
 
-## Migration DB ways
+### Naive Approach
 
-### Naive way
+#### Analysis
 
-#### Analyze
+When I worked at my first company, I needed to migrate a MySQL database
+from an old server to a new server.
+The reason was a server and network restructure. My team's services
+belonged to another network cluster, so we needed to move the database
+and service to a new cluster.
 
-When I was working at my first company, I need to migrate database MySQL that is running on old server to new server. 
-
-The reason for this task is because of the restructure server and network in company, my team's services belongs to another network cluster, so my team needs to move database and service to a new network cluster.
-
-What I do is a very naive way:
+My approach was very naive:
 - Stop the service
 - Dump the database using mysqldump
-- Apply dump into a new server
-- Start the service, using new database
+- Apply the dump to the new server
+- Start the service, using the new database
 
-This way is simple, but has a very big disadvantages, Downtime is large if database is large.
+This way is simple, but has a big disadvantage:
+Downtime is large if the database is large.
 
-So why my boss accept this way. It's because my service is allowed to have a downtime. The DB is used for admin tools,
-and it contains statistics data of a payment system, aggregated by day. Admin service listens for event change transaction in 
-message queue, then update to corresponding statistics row. During the downtime, messages change transaction are still stored on
-message queue, so I don't loss data. Not only that, after each day, I will perform a full scan of transaction in day on main payment
-service, and correct the statistic data. So the correctness of statistic database is kept. Admin tools often be used by internal users
-like POs, directors, etc, and I ask my boss for a downtime at 7pm, so nobody uses it at the time I migrate DB ^^. Summarize, the downtime
-doesn't have big affect to the service and user.
+My boss accepted this way because downtime was allowed.
+The DB was used for admin tools and contained statistics data
+of a payment system, aggregated by day.
+Admin service listened for transaction change events in a message queue,
+then updated the corresponding statistics row.
+During downtime, transaction change messages were still stored in the queue,
+so I did not lose data.
+After each day, I performed a full scan of transactions for the day
+on the main payment service and corrected the statistics data.
+So the correctness of the statistics database was kept.
+Admin tools were used by internal users like POs and directors.
+I asked my boss for downtime at 7pm, so nobody used it during migration.
+In summary, the downtime did not have a big impact on the service or users.
 
-Performance of mysqldump is based on some factors:
-- Read/write throughput of disk.
-- Network throughput if mysqldump client and mysql server is in 2 different servers.
-- Size of database.
+Performance of mysqldump depends on:
+- Disk read/write throughput
+- Network throughput if mysqldump client and MySQL server are on different servers
+- Size of the database
 
-I don't remember exactly how much time I dump database in my first migration DB task, but I remember that it less than 1 minutes because:
-- All read/write throughput of disk is used for mysqldump because I stop my service, so no read/write is performed on DB.
-- Size of database is very small. My DB only stores statistics like revenue, number of transactions for each tuple (status, merchant, product, zone, day). 
+I do not remember exactly how much time my first migration took,
+but it was less than 1 minute because:
+- All disk throughput was used for mysqldump since the service was stopped
+- The database was very small, storing only statistics like revenue,
+  number of transactions for each tuple (status, merchant, product, zone, day)
 
-Get back to the lab. First I need to know the size of database. I run this SQL command to get average size of each row.
+For this lab, I checked the average row size with:
 ```SQL
 select TABLE_NAME, AVG_ROW_LENGTH from INFORMATION_SCHEMA.tables where TABLE_NAME = "transactions";
 ```
+
 ![Transaction average row size](../images/lab01/transaction_avg_size.png)
 
-From this, I know that each row in table transactions have average size 335 bytes, result in size of database is 335 x 9M = 1.5 GB.
+Each row in the transactions table averages 335 bytes,
+so the database size is 335 x 9M = 1.5 GB.
 
-Why I need to stop service before dumping data. Because if any writes is performed during dumping, these writes are not included in 
-dump result. When new database applies dump data, it doesn't have these new writes, result in data loss.
+Stopping the service before dumping is crucial.
+Any writes during dumping are not included in the dump.
+When the new database applies the dump, it does not have these new writes,
+resulting in data loss.
 
-#### Stop the service
-This is the first step in migrating db in naive way. You must ensure that no write is performed, otherwise these writes will be lost.
+#### Stop the Service
+This is the first step in the naive migration approach.
+You must ensure that no writes are performed, otherwise they will be lost.
 
-#### Dump old database
-Before dumping, mysqldump requires PROCESS privilege. You can login to database as root, then use this SQL to get PROCESS privilege 
-for account that is used for mysqldump.
-
+#### Dump the Old Database
+Before dumping, mysqldump requires the PROCESS privilege.
+Login as root, then use this SQL to grant PROCESS privilege
+to the account used for mysqldump:
 ```SQL
 grant process on *.* to 'luke_luke'@'%'
 ```
-I use account luke_luke for mysqldump, so I grant process privilege to this account. 
+I used the luke_luke account for mysqldump, so I granted PROCESS privilege to it.
 
-The mysqldump command is written in [mysql dump command](../script/mysql/dump_command.sh). Change the username that mysqldump use from my name (luke_luke)
-to your name. Also, you can change the result file of mysqldump. Result file is the file that mysqldump put logical snapshot of database in.
-Then you can execute this command
-```mysqldump
-### Working directory is in mysql folder
+The mysqldump command is written in [mysql dump command](../script/mysql/dump_command.sh).
+Change the username from my name (luke_luke) to your name.
+You can also change the result file for mysqldump.
+Then execute this command:
+```sh
+# Working directory: mysql
 sh .\dump_command.sh
 ```
 
-This is my result.
+Result:
 
 ![](../images/lab01/dump_finish.png)
-
 ![](../images/lab01/old_dump_size.png)
 
-As you can see, it takes me 42 seconds to dump the database, and the file size is approximately 1.5 GB.
+It took 42 seconds to dump the database,
+and the file size is about 1.5 GB.
 
-#### Apply dump file
-In this step, you apply a dump file into a new database.
+#### Apply the Dump File
+In this step, you apply the dump file to the new database.
+In my first migration, I simply logged in to the new server,
+executed mysqldump on the old database, and applied the dump file.
 
-In my first task of migration, I simply login to the new database server, execute mysqldump to the old database on it,
-and apply the dump file.
+In this lab, you can do the same.
+But since I created the dump file on the host,
+I first need to copy the dump file from the host to the new database container,
+then apply it.
 
-In this lab, you can also do it. 
-But because I create dump file on host, so I first need to copy dump file from host to new database container, then apply it.
-
-You can copy dump file and apply it to new database container by running
-```Copy and apply dump
-## Current working directory is script/docker/database
+You can copy and apply the dump file by running:
+```sh
+# Working directory: script/docker/database
 sh .\copy_apply_dump_file.sh
 ```
 
-In this script, I first copy dump file to /var/dump/old_database.sql. Then I copy apply_dump_file.sh to /var/dump and execute it.
-apply_dump_file.sh simply apply dump file to the SQL server running on container.
+This script copies the dump file to /var/dump/old_database.sql.
+Then it copies apply_dump_file.sh to /var/dump and executes it.
+apply_dump_file.sh simply applies the dump file to the SQL server running in the container.
 
-The result of copy and apply is
+Result:
 
 ![](../images/lab01/apply_dump.png)
 
-You can see, it takes 28 seconds to copy dump file to new database container, and 122 seconds to apply dump file to new database server. 
+It took 28 seconds to copy the dump file to the new container,
+and 122 seconds to apply the dump file to the new server.
 
-#### Start service, use new database
-Now, you simply start service and use new database.
+#### Start the Service and Use the New Database
+Now, simply start the service and use the new database.
 
-### Reduce downtime way
-You can see that, the downtime for naive way is a lot. My database size is only 1.5 GB, no network throughput need because I work
-at localhost and all read/write throughput is used for migration, but it takes me 42 + 28 + 122 seconds to migrate. With large databases in TB units, 
-network and disk throughput is not large, the downtime could be hours. How can we reduce it.
-
+### Reducing Downtime
+You can see that downtime for the naive approach is high.
+My database size is only 1.5 GB, no network throughput needed
+because I work at localhost and all disk throughput is used for migration,
+but it took 42 + 28 + 122 seconds to migrate.
+With large databases in TB units, network and disk throughput is not high,
+downtime could be hours. How can we reduce it.
