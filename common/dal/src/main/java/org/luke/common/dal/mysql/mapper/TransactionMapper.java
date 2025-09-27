@@ -25,14 +25,14 @@ public interface TransactionMapper {
      *
      * @param transaction transaction information
      */
-    int insertTransaction(Transaction transaction);
+    void insertTransaction(Transaction transaction);
 
     /**
      * update transaction in database.
      *
      * @param transaction transaction information
      */
-    int updateTransaction(Transaction transaction);
+    void updateTransaction(Transaction transaction);
 
     /**
      * count number of row in transactions
