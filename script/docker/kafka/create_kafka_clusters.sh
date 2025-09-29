@@ -38,6 +38,7 @@ docker run -d  \
   -e KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER \
   -e KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT \
   -e KAFKA_CONTROLLER_QUORUM_VOTERS=1@host.docker.internal:9093 \
+  -e KAFKA_AUTO_CREATE_TOPICS_ENABLE=true \
   -v kafka_data1:${KAFKA_DATA_DIR} \
   -v kafka_config1:${KAFKA_SHARED_CONFIG_DIR} \
   -v kafka_secret1:${KAFKA_SECRET_DIR} \
@@ -60,6 +61,7 @@ docker run -d  \
   -e KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1 \
   -e KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS=0 \
   -e KAFKA_NUM_PARTITIONS=1 \
+  -e KAFKA_AUTO_CREATE_TOPICS_ENABLE=true \
   -v kafka_data2:/var/lib/kafka/data \
   -v kafka_config2:/mnt/shared/config \
   -v kafka_secret2:/etc/kafka/secrets \
@@ -82,6 +84,7 @@ docker run -d  \
   -e KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1 \
   -e KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS=0 \
   -e KAFKA_NUM_PARTITIONS=1 \
+  -e KAFKA_AUTO_CREATE_TOPICS_ENABLE=true \
   -v kafka_data3:${KAFKA_DATA_DIR} \
   -v kafka_config3:${KAFKA_SHARED_CONFIG_DIR} \
   -v kafka_secret3:${KAFKA_SECRET_DIR} \
