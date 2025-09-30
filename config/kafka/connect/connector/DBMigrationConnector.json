@@ -1,0 +1,21 @@
+{
+  "name": "DB Migration 2",
+  "config": {
+    "tasks.max": "1",
+    "database.hostname": "host.docker.internal",
+    "database.password": "luke_password_old",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "header.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "database.query.timeout.ms": "600000",
+    "topic.prefix": "Luke",
+    "database.server.id": "3",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "database.user": "luke_luke",
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+    "schema.history.internal.kafka.bootstrap.servers": "host.docker.internal:19092",
+    "schema.history.internal.kafka.topic": "new_schema_history",
+    "database.port": "3307",
+    "snapshot.mode": "no_data",
+    "database.server.name": "server3"
+  }
+}
