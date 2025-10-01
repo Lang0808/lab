@@ -1,20 +1,22 @@
 package org.luke.controller;
 
 import org.luke.common.model.exception.ErrorCode;
+import org.luke.generator.GenTaskCreateTrans;
 import org.luke.generator.GenerateDBTask;
 import org.luke.generator.OldDBDataGenerator;
 import org.luke.generator.config.OldDBDataGeneratorConfig;
 import org.luke.model.req.CountRowReq;
+import org.luke.model.req.CreateTestTrafficReq;
 import org.luke.model.resp.CountRowResp;
 import org.luke.model.resp.GenerateOldDataResp;
 import org.luke.service.OldDBService;
 import org.luke.web.annotations.ApiLab;
 import org.luke.web.exception.model.BaseException;
+import org.luke.web.model.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -62,5 +64,17 @@ public class OldDBController {
     @GetMapping("/count")
     public CountRowResp countRowOldDB(CountRowReq req) {
         return oldDBService.countRowOldDB(req);
+    }
+
+    @PostMapping("/create_test_traffic")
+    public BaseResponse createTestTraffic(@RequestBody CreateTestTrafficReq req) {
+        GenTaskCreateTrans task = new GenTaskCreateTrans(
+                req.getNTransTotal(),
+                0,
+                1000,
+                executor,
+                oldDBDataGenerator);
+        executor.execute(task);
+        return new BaseResponse();
     }
 }
