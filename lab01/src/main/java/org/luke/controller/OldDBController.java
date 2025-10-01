@@ -1,5 +1,6 @@
 package org.luke.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.luke.common.model.exception.ErrorCode;
 import org.luke.generator.GenTaskCreateTrans;
 import org.luke.generator.GenerateDBTask;
@@ -24,6 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * This class contains API for generating and working with old database
  */
+@Slf4j
 @Controller
 @ApiLab(labName = "lab01", prefix = "old_db")
 public class OldDBController {
@@ -68,6 +70,7 @@ public class OldDBController {
 
     @PostMapping("/create_test_traffic")
     public BaseResponse createTestTraffic(@RequestBody CreateTestTrafficReq req) {
+        log.info("req = {}", req);
         GenTaskCreateTrans task = new GenTaskCreateTrans(
                 req.getNTransTotal(),
                 0,
