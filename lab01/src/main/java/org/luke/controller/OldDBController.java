@@ -88,7 +88,8 @@ public class OldDBController {
      */
     @PostMapping("/create_transaction")
     public BaseResponse createTransaction(@RequestBody CreateTransactionReq req) {
-        oldDBDataGenerator.generateDataTransaction(req.getTransId(), req.getStatus());
+        log.info("req createTransaction = {}", req);
+        oldDBDataGenerator.generateTransaction(req.getTransId(), req.getStatus());
         return new BaseResponse();
     }
 }

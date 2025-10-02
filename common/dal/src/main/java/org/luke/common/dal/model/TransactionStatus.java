@@ -2,5 +2,5 @@ package org.luke.common.dal.model;
 
 public enum TransactionStatus {
 
-    OPEN, PROCESSING, FINISH, FAIl;
+    OPEN, PROCESSING, FINISH, FAIL;
 }

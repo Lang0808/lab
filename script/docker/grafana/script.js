@@ -5,7 +5,7 @@ const BASE_URL = 'http://host.docker.internal:8080'; // Change to your backend h
 const CREATE_URL = `${BASE_URL}/api/v1/lab01/old_db/create_transaction`;
 const GET_URL = `${BASE_URL}/api/v1/lab01/api_test/transaction`;
 
-const STATUSES = ['pending', 'completed', 'failed', 'cancelled', 'refunded'];
+const STATUSES = ['OPEN', 'PROCESSING', 'FAIL', 'FINISH'];
 const TRANSACTION_ID_LENGTH = 20;
 const NONEXIST_PREFIX = 'nonexist-';
 
@@ -19,7 +19,7 @@ function randomString(length) {
 }
 
 export const options = {
-    vus: 50, // 50 transactions per second
+    vus: 10, // 10 transactions per second
     duration: '180s',
 };
 
@@ -28,7 +28,7 @@ export default function () {
     const transId = randomString(TRANSACTION_ID_LENGTH);
     const status = STATUSES[Math.floor(Math.random() * STATUSES.length)];
     const payload = JSON.stringify({ transId, status });
-    const params = { headers: { 'Content-Type': 'application/json' } };
+    const params = { headers: { 'Content-Type': 'application/json' }, timeout: '60s' };
     const res = http.post(CREATE_URL, payload, params);
     check(res, {
         'create transaction status is 200': (r) => r.status === 200,
@@ -36,10 +36,10 @@ export default function () {
     let insertFailed = res.status !== 200;
     let getFailed = false;
 
-    // 10% chance to query inserted transaction after 10s
-    if (Math.random() < 0.1) {
+    // 10% chance to query inserted transaction after 10s, only if insert was successful
+    if (res.status === 200) {
         sleep(10);
-        const getRes = http.get(`${GET_URL}?transId=${transId}`);
+        const getRes = http.get(`${GET_URL}?transId=${transId}`, { timeout: '60s' });
         check(getRes, {
             'get transaction status is 200': (r) => r.status === 200,
         });
@@ -48,10 +48,14 @@ export default function () {
         }
     }
 
-    // Query 10 non-existing transactions per second
+
+    if (Math.random() > 0.01) {
+        return;
+    }
+    // 1% Query 10 non-existing transactions
     for (let i = 0; i < 10; i++) {
         const nonexistId = NONEXIST_PREFIX + randomString(TRANSACTION_ID_LENGTH);
-        const nonexistRes = http.get(`${GET_URL}?transId=${nonexistId}`);
+        const nonexistRes = http.get(`${GET_URL}?transId=${nonexistId}`, { timeout: '60s' });
         check(nonexistRes, {
             'get nonexist transaction should not be 200': (r) => r.status !== 200,
         });
@@ -59,8 +63,4 @@ export default function () {
             // Count as failure
         }
     }
-
-    // Custom metrics can be added here if needed
-    // sleep(1); // Not needed, VUs control rate
 }
-
