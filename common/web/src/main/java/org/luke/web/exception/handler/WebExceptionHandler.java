@@ -1,6 +1,7 @@
 package org.luke.web.exception.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.luke.common.model.exception.ErrorCode;
 import org.luke.web.annotations.ApiLab;
 import org.luke.web.exception.model.BaseException;
 import org.luke.web.exception.model.ExceptionResponse;
@@ -19,8 +20,17 @@ public class WebExceptionHandler {
 
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<ExceptionResponse> handleException(BaseException e, WebRequest webRequest) {
-        ExceptionResponse response = new ExceptionResponse();
+        ApiLab apiLab = getApiLabFromRequest(webRequest);
+        return buildResponseEntity(apiLab, e.getErrorCode(), e.getMessage());
+    }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionResponse> handleException(Exception e, WebRequest webRequest) {
+        ApiLab apiLab = getApiLabFromRequest(webRequest);
+        return buildResponseEntity(apiLab, ErrorCode.INTERNAL_ERROR, e.getMessage());
+    }
+
+    private ApiLab getApiLabFromRequest(WebRequest webRequest) {
         HttpServletRequest request = ((ServletWebRequest) webRequest).getRequest();
 
         // Try to get HandlerMethod
@@ -32,10 +42,14 @@ public class WebExceptionHandler {
             apiLab = controllerClass.getAnnotation(ApiLab.class);
         }
 
-        ResponseUtil.setBaseResponseBasicInfos(response, apiLab);
-        response.setErrorCode(e.getErrorCode().getErrorCode());
-        response.setMessage(e.getMessage());
+        return apiLab;
+    }
 
+    private ResponseEntity<ExceptionResponse> buildResponseEntity(ApiLab apiLab, ErrorCode errorCode, String message) {
+        ExceptionResponse response = new ExceptionResponse();
+        ResponseUtil.setBaseResponseBasicInfos(response, apiLab);
+        response.setErrorCode(errorCode.getErrorCode());
+        response.setMessage(message);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 }

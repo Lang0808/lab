@@ -8,6 +8,7 @@ import org.luke.generator.OldDBDataGenerator;
 import org.luke.generator.config.OldDBDataGeneratorConfig;
 import org.luke.model.req.CountRowReq;
 import org.luke.model.req.CreateTestTrafficReq;
+import org.luke.model.req.CreateTransactionReq;
 import org.luke.model.resp.CountRowResp;
 import org.luke.model.resp.GenerateOldDataResp;
 import org.luke.service.OldDBService;
@@ -78,6 +79,16 @@ public class OldDBController {
                 executor,
                 oldDBDataGenerator);
         executor.execute(task);
+        return new BaseResponse();
+    }
+
+    /**
+     * Used to test if database migration correct
+     * @return empty response
+     */
+    @PostMapping("/create_transaction")
+    public BaseResponse createTransaction(@RequestBody CreateTransactionReq req) {
+        oldDBDataGenerator.generateDataTransaction(req.getTransId(), req.getStatus());
         return new BaseResponse();
     }
 }

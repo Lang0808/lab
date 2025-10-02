@@ -25,20 +25,31 @@ public class OldDBDataGenerator {
     private OldDBDataGeneratorConfig genConfig;
 
     public Transaction generateDataTransaction(int i) {
+        String transId = IdUtil.generateTransId(i);
+        TransactionStatus status = RandomUtil.getRandomEnum(TransactionStatus.class);
+        return generateDataTransaction(transId, status);
+    }
+
+    public Transaction generateDataTransaction(String transId, TransactionStatus status) {
         Transaction transaction = new Transaction();
-        transaction.setId(IdUtil.generateTransId(i));
+        transaction.setId(transId);
         transaction.setPrice(Math.abs(RandomUtil.generateRandomLong()));
         transaction.setQuantity(Math.abs(RandomUtil.generateRandomInt()));
         transaction.setTotal(transaction.getPrice() * transaction.getQuantity());
         transaction.setSender(IdUtil.generateUserId(genConfig.getUser()));
         transaction.setReceiver(IdUtil.generateUserId(genConfig.getUser()));
         transaction.setProductId(IdUtil.generateProductId(genConfig.getProduct()));
-        transaction.setStatus(RandomUtil.getRandomEnum(TransactionStatus.class));
+        transaction.setStatus(status);
         return transaction;
     }
 
     public void generateTransaction(int i) {
         Transaction transaction = generateDataTransaction(i);
+        transactionRepository.insertTransaction(transaction);
+    }
+
+    public void generateTransaction(String transId, TransactionStatus status) {
+        Transaction transaction = generateDataTransaction(transId, status);
         transactionRepository.insertTransaction(transaction);
     }
 
