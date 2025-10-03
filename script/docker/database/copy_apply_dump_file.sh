@@ -21,3 +21,5 @@ docker exec lab01_new_db chmod 777 "/${CONTAINER_DIR_APPLY_FILE}"
 docker exec lab01_new_db sh -c "cd ${BASE_PATH} && ./${APPLY_FILE_NAME}"
 END_TIME=$(date +%s)
 echo "Apply dump file to new database container completed in $(($END_TIME - $START_TIME)) seconds"
+
+docker exec lab01_new_db rm "/${CONTAINER_DIR_APPLY_FILE}"
