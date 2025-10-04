@@ -20,7 +20,7 @@ function randomString(length) {
 
 export const options = {
     vus: 10, // 10 transactions per second
-    duration: '1800s', // 30 mins
+    duration: '180s', // 3 mins
 };
 
 export default function () {
